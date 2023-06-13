@@ -1,4 +1,4 @@
-from easy_import import EasyImport
+from hot_import import EasyImport
 from easy_terminal import terminal
 
 import test_import
