@@ -8,7 +8,7 @@ Import `easy_import` into your python file with `import hot_import` or `from hot
 
 Import the desired module as following `import module_name`
 
-**/!\** It will **not** work if you do `from module_name import *` or `from module_name import function` **/!\**
+**/!\\** It will **not** work if you do `from module_name import *` or `from module_name import function` **/!\\**
 
 
 ## STEP 3
