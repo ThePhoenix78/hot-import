@@ -2,7 +2,7 @@
 
 ## STEP 1
 
-Import `easy_import` into your python file with `import easy_import` or `from easy_import import EasyImport`
+Import `easy_import` into your python file with `import hot_import` or `from hot_import import EasyImport`
 
 ## STEP 2
 
@@ -19,7 +19,7 @@ Create an object EasyImport that you will use to manage your modules
 
 ```py
 # main.py
-from easy_import import EasyImport
+from hot_import import EasyImport
 
 import module
 
@@ -41,7 +41,7 @@ def hello():
 ```
 ```py
 # main.py
-from easy_import import EasyImport
+from hot_import import EasyImport
 import time
 
 import module
@@ -64,7 +64,7 @@ You can add an event on_update to help you debugging
 
 ```py
 # main.py
-from easy_import import EasyImport
+from hot_import import EasyImport
 import time
 
 import module
