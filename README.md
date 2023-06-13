@@ -2,7 +2,7 @@
 
 ## STEP 1
 
-Import `easy_import` into your python file with `import hot_import` or `from hot_import import EasyImport`
+Import `hot_import` into your python file with `import hot_import` or `from hot_import import EasyImport`
 
 ## STEP 2
 
