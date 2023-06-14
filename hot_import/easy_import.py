@@ -2,14 +2,12 @@ from easy_events import EasyEvents, Parameters
 from inspect import getmembers
 
 import importlib, types
-import zipimport, zipfile
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-import sys, os, gc
+import sys, os
 
-from io import BytesIO
 import time, shutil
 
 
