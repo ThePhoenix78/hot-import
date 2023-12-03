@@ -1,8 +1,10 @@
-hello = "Hello world"
+from .test2 import *
+
+hello = "Hello"
 
 
 def say_hello():
-    return hello + " how are you today?"
+    return hello + " how today???"
 
 
 def baba():
@@ -12,7 +14,7 @@ def baba():
 class TestClass():
     def __init__(self, a):
         self.a = a
-        self.b = 6
+        self.b = 5
         self.c = baba
 
     def build_str(self):
@@ -24,3 +26,5 @@ class TestClass():
 
     def __str__(self):
         return self.build_str()
+    
+

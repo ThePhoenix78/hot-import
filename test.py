@@ -1,46 +1,30 @@
-from hot_import import EasyImport
-from easy_terminal import terminal
+from hot_import import HotImport
 
 import test_import
+from test_import import say_hello
+
+from test_import import TestClass
+
+import time
 
 
-mods = EasyImport([test_import], auto_update=True)
+mods = HotImport([say_hello])
 
-test_import = mods.get_module(test_import)
-
-# print(mods.modules[1].sub_modules)
-
-
-@mods.on_update()
-def on_update(module):
-    name = module.module_name
-    print(f"\nUpdated : {name}")
-
-
-myClass = test_import.TestClass(10)
-
-
-@terminal()
 def hello():
-    print(test_import.say_hello())
-    print(test_import.hello)
+    print(say_hello())
 
 
-@terminal()
+def lol():
+    print(test_import.lol())
+
+
 def baba():
     print(test_import.baba())
 
 
-@terminal()
-def show_class():
-    print(myClass)
-
-
-@terminal()
-def add():
-    myClass.a += 1
-    print(myClass)
-
+while True:
+    print(say_hello())
+    time.sleep(1)
 
 # mods.stop_observer()
 # mods.join_observer()

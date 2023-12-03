@@ -1,1 +1,1 @@
-from .easy_import import *
+from .hot_import import *
