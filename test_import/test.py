@@ -1,6 +1,4 @@
-from .test2 import *
-
-hello = "Hello you"
+hello = "Hello"
 
 
 def say_hello():
@@ -12,10 +10,13 @@ def baba():
 
 
 class TestClass():
-    def __init__(self, a):
+    def __init__(self, a=1):
         self.a = a
         self.b = 5
         self.c = baba
+
+    def test(self):
+        return "yes"
 
     def build_str(self):
         res = ""

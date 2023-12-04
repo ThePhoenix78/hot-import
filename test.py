@@ -3,18 +3,15 @@ from hot_import import HotImport
 import test_import
 from test_import import say_hello
 
-from test_import import TestClass
+from test_import import TestClass as TC
 
 import time
 
-mods = HotImport([test_import.say_hello])
+t = TC()
+mods = HotImport([test_import])
 
 def hello():
     print(say_hello())
-
-
-def lol():
-    print(test_import.lol())
 
 
 def baba():
@@ -22,8 +19,9 @@ def baba():
 
 
 while True:
-    print("say_hello                : ", say_hello(), say_hello)
-    print("test_import.say_hello    : ", test_import.say_hello(), test_import.say_hello)
+    print("say_hello : ", hello(), hello)
+    print("say_hello : ", baba(), baba)
+    print(TC.test(t))
     time.sleep(1)
 
 # mods.stop_observer()
