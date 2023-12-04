@@ -1,0 +1,2 @@
+def lol():
+    return "lol"
