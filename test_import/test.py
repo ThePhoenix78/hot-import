@@ -1,6 +1,6 @@
 from .test2 import *
 
-hello = "Hello"
+hello = "Hello you"
 
 
 def say_hello():

@@ -129,15 +129,14 @@ class Module(FileSystemEventHandler):
 
 class HotImport():
     def __init__(self, modules: list = [], auto_update: bool = True):
-        # EasyEvents.__init__(self, str_only=False, default_event=False)
-        caller_module = sys._getframe(1).f_globals['__name__']
-        self.module_importer = sys.modules[caller_module]
-        
+        # EasyEvents.__init__(self, str_only=False, default_event=False)        
         self.modules = []
         self.functions = {}
         self.observer = Observer()
         self.callback_function = self.modul_on_update
         observed = []
+        caller_module = sys._getframe(1).f_globals["__name__"]
+        self.module_importer = sys.modules[caller_module]
 
         for module in modules:
             if not callable(module):
@@ -192,11 +191,16 @@ class HotImport():
 
         return add_debug
     
-    def modul_on_update(self, module):
-        for old_name in vars(self.module_importer).keys():
-            old_func = old_name.split(".")[-1]
-            for new_name, new_var in vars(module).items():
-                if old_func == new_name:
-                    vars(self.module_importer)[new_name] = new_var
+    def modul_on_update(self, module:Mod):
+        module_imported = sys.modules[module.__name__]
 
+        for old_name, f in vars(module_imported).items():
+            old_func = old_name.split(".")[-1]
+            for new_name, new_val in vars(module).items():
+                if old_func == new_name:
+                    vars(module_imported)[new_name] = new_val
+                    for main_var, main_val in vars(self.module_importer).items():
+                        if main_val == f:
+                            vars(self.module_importer)[main_var] = new_val
+                        
         print(f"\nUpdated : {module.__name__}")

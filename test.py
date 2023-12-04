@@ -7,8 +7,7 @@ from test_import import TestClass
 
 import time
 
-
-mods = HotImport([say_hello])
+mods = HotImport([test_import.say_hello])
 
 def hello():
     print(say_hello())
@@ -23,7 +22,8 @@ def baba():
 
 
 while True:
-    print(say_hello())
+    print("say_hello                : ", say_hello(), say_hello)
+    print("test_import.say_hello    : ", test_import.say_hello(), test_import.say_hello)
     time.sleep(1)
 
 # mods.stop_observer()
