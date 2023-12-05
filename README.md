@@ -2,30 +2,27 @@
 
 ## STEP 1
 
-Import `hot_import` into your python file with `import hot_import` or `from hot_import import EasyImport`
+Import `hot_import` into your python file with `import hot_import` or `from hot_import import HotImport`
 
 ## STEP 2
 
-Import the desired module as following `import module_name`
-
-**/!\\** It will **not** work if you do `from module_name import *` or `from module_name import function` **/!\\**
-
+Import the desired module as following `import module_name` or `from module_name import function`
 
 ## STEP 3
 
 
-Create an object EasyImport that you will use to manage your modules
+Create an object HotImport that you will use to manage your modules
 
 
 ```py
 # main.py
-from hot_import import EasyImport
+from hot_import import HotImport
 
 import module
+from module2 import function
 
 
-mods = EasyImport([module], auto_update=True)
-
+mods = HotImport([module, function], auto_update=True)
 module = mods.get_module(module)
 ```
 
@@ -40,19 +37,25 @@ def hello():
     return "Hello world!"
 ```
 ```py
+# module2.py
+def function():
+    return "This is a function!"
+```
+```py
 # main.py
-from hot_import import EasyImport
+from hot_import import HotImport
 import time
 
 import module
+from module2 import function
 
 
-mods = EasyImport([module], auto_update=True)
-
+mods = EasyImport([module, function], auto_update=True)
 module = mods.get_module(module)
 
 while True:
     print(module.hello())
+    print(function2())
     time.sleep(1)
 ```
 
@@ -77,7 +80,7 @@ module = mods.get_module(module)
 
 @mods.on_update()
 def on_update(module):
-    print(f"The module {module.module_name} has been updated!")
+    print(f"The module {module.__name__} has been updated!")
 
 
 while True:
