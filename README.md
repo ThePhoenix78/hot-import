@@ -1,93 +1,28 @@
 # **HOW TO USE?**
 
-## STEP 1
-
-Import `hot_import` into your python file with `import hot_import` or `from hot_import import HotImport`
-
-## STEP 2
-
-Import the desired module as following `import module_name` or `from module_name import function`
-
-## STEP 3
-
-
-Create an object HotImport that you will use to manage your modules
-
-
 ```py
-# main.py
-from hot_import import HotImport
-
-import module
-from module2 import function
-
-
-mods = HotImport([module, function], auto_update=True)
-module = mods.get_module(module)
+import test_import
+...
+mods = HotImport([test_import]) # Update all the 'test_import' module
 ```
 
-
-### STEP 4
-
-Check if it's working, to proceed, you have to edit `module.py` while your code is running
-
 ```py
-# module.py
-def hello():
-    return "Hello world!"
+from test_import import say_hello #<- ═══════════════════════════════════════════════════════╗
+... #                                                                                        ║
+mods = HotImport([say_hello]) # Update only the 'test_import.say_hello' function and the 'say_hello' function
 ```
 ```py
-# module2.py
-def function():
-    return "This is a function!"
+from test_import import TestClass as TC
+...
+mods = HotImport([TC]) # Update all the 'TestClass' class and 'TC'
 ```
+
+### Warning !
+If you have : 
 ```py
-# main.py
-from hot_import import HotImport
-import time
-
-import module
-from module2 import function
-
-
-mods = EasyImport([module, function], auto_update=True)
-module = mods.get_module(module)
-
-while True:
-    print(module.hello())
-    print(function2())
-    time.sleep(1)
+t = TC()
 ```
-
-
-### STEP 5 (optional)
-
-
-You can add an event on_update to help you debugging
-
-```py
-# main.py
-from hot_import import EasyImport
-import time
-
-import module
-
-
-mods = EasyImport([module], auto_update=True)
-
-module = mods.get_module(module)
-
-
-@mods.on_update()
-def on_update(module):
-    print(f"The module {module.__name__} has been updated!")
-
-
-while True:
-    print(module.hello())
-    time.sleep(1)
-```
-
+Then after the update `t.function()` will be the old one, you can access the new version only by using `TC.function(t)`
 
 ## DISCLAIMER
 

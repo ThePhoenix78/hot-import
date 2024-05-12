@@ -1,22 +1,28 @@
 from hot_import import HotImport
 
 import test_import
-from test_import import say_hello, lol
+from test_import import say_hello
+
+from test_import import TestClass as TC
 
 import time
 
+t = TC()
+mods = HotImport([test_import])
 
-mods = HotImport([test_import, say_hello, lol])
-test_import = mods.get_module(test_import)
+def hello():
+    print(say_hello())
 
 
-def add():
-    myClass.a += 1
-    print(myClass)
+def baba():
+    print(test_import.baba())
 
 
 while True:
-    print(lol())
-    print(say_hello())
-    print(test_import.baba())
+    print("say_hello : ", hello(), hello)
+    print("say_hello : ", baba(), baba)
+    print(TC.test(t))
     time.sleep(1)
+
+# mods.stop_observer()
+# mods.join_observer()

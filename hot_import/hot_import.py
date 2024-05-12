@@ -1,3 +1,4 @@
+# from easy_events import EasyEvents, Parameters
 from inspect import getmembers, getfile, ismethod, getsource
 
 import importlib, types
@@ -8,7 +9,6 @@ from watchdog.events import FileSystemEventHandler
 import sys, os
 
 import time, shutil
-
 
 class Mod:
     def __init__(self, functions: dict, name: str):
@@ -69,7 +69,10 @@ class Module(FileSystemEventHandler):
             self.functions_mods[mod] = {dico[i][0]: dico[i][1] for i in range(len(dico))}
             self.functions = {**self.functions, **self.functions_mods[mod]}
 
-        if self.auto_update and self.module:
+        if not self.module:
+            self.module = Mod(self.functions, self.module_name)
+
+        elif self.auto_update:
             self.module.___update___(self.functions, self.module_name)
 
         else:
@@ -125,44 +128,28 @@ class Module(FileSystemEventHandler):
 
 
 class HotImport():
-    def __init__(self, modules: list = [], auto_update: bool = True, globals=None):
-        self.modules_importer = {}
-        caller_module = sys._getframe(1).f_globals["__name__"]
-        self.modules_importer[caller_module] = sys.modules[caller_module]
-
-        self.globals = globals
+    def __init__(self, modules: list = [], auto_update: bool = True):
+        # EasyEvents.__init__(self, str_only=False, default_event=False)        
         self.modules = []
         self.functions = {}
-
         self.observer = Observer()
-        self.callback_function = None
-        self.ignore = [
-            "__builtins__", "__cached__", "__file__",
-            "__loader__", "__name__", "__package__",
-            "__spec__", "__path__", "__doc__"
-        ]
-
+        self.callback_function = self.modul_on_update
         observed = []
+        caller_module = sys._getframe(1).f_globals["__name__"]
+        self.module_importer = sys.modules[caller_module]
 
         for module in modules:
-            caller_module = None
-
             if not callable(module):
                 pat = os.path.abspath(module.__file__).replace("\\", "/").rsplit("/", 1)[0]
-                caller_module = sys._getframe(1).f_globals[module.__name__]
             else:
                 pat = getfile(module).replace("\\", "/").rsplit("/", 1)[0]
                 name = module.__module__.rsplit(".", 1)[0]
                 self.functions[f"{name}.{module.__name__}"] = module
-                caller_module = sys._getframe(1).f_globals[name]
 
             if pat not in observed:
                 event_handler = self.add_handler(Module(module, event_handler=self.call_event, auto_update=auto_update))
                 self.observer.schedule(event_handler, path=pat, recursive=True)
                 observed.append(pat)
-
-                if caller_module:
-                    self.modules_importer[caller_module.__name__] = sys.modules[caller_module.__name__]
 
         self.observer.start()
 
@@ -179,9 +166,9 @@ class HotImport():
                 return mod.module
 
     def get_function(self, function: str):
-        for mod in self.modules:
-            if mod.functions.get(function.__name__):
-                return mod.functions.get(function.__name__)
+        mod = self.get_module(function.__module__.rsplit(".", 1)[0])
+        if mod:
+            return getattr(mod, function.__name__)
 
     def join_observer(self):
         self.observer.join()
@@ -190,8 +177,7 @@ class HotImport():
         self.observer.stop()
 
     def call_event(self, module):
-        self.module_on_update(module)
-
+        # self.functions[f"{module.__module__}.{module.__name__}"] = module
         if self.callback_function:
             self.callback_function(module)
 
@@ -204,32 +190,17 @@ class HotImport():
             return add_debug(callback)
 
         return add_debug
+    
+    def modul_on_update(self, module:Mod):
+        module_imported = sys.modules[module.__name__]
 
-    def module_on_update(self, module):
-        """
-        updated = False
-        for k, v in self.modules_importer.items():
-            if k == module.__name__:
-                for new_name, new_var in module.__dict__.items():
-                    # if new_name not in self.ignore:
-                    mod =  self.modules_importer.get("__main__")
-
-                    print(vars(mod))
-                    vars(mod)[new_name] = new_var
-        """
-        for k, v in self.functions.items():
-            if k.startswith(f"{module.__name__}."):
-                new_name = k.rsplit(".", 1)[-1]
-                mod = self.modules_importer.get("__main__")
-                self.functions[k] = getattr(module, new_name)
-                vars(mod)[new_name] = self.functions[k]
-                # print(self.functions[k])
-
-        """
-        # self.globals[new_name] = self.functions[k]
-        for old_name in vars(self.module_importer).keys():
+        for old_name, f in vars(module_imported).items():
             old_func = old_name.split(".")[-1]
-            for new_name, new_var in vars(module).items():
+            for new_name, new_val in vars(module).items():
                 if old_func == new_name:
-                    vars(self.module_importer)[new_name] = new_var
-        """
+                    vars(module_imported)[new_name] = new_val
+                    for main_var, main_val in vars(self.module_importer).items():
+                        if main_val == f:
+                            vars(self.module_importer)[main_var] = new_val
+                        
+        #print(f"\nUpdated : {module.__name__}")

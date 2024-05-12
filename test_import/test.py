@@ -1,22 +1,22 @@
-from .test2 import *
-
-
-hello = "hello"
+hello = "Hello"
 
 
 def say_hello():
-    return hello + " how is you"
+    return hello + " how today???"
 
 
 def baba():
-    return "baba yaga yoyo"
+    return "babaaaa"
 
 
 class TestClass():
-    def __init__(self, a):
+    def __init__(self, a=1):
         self.a = a
         self.b = 5
         self.c = baba
+
+    def test(self):
+        return "yes"
 
     def build_str(self):
         res = ""
@@ -27,3 +27,5 @@ class TestClass():
 
     def __str__(self):
         return self.build_str()
+    
+
