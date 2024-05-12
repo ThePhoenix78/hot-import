@@ -7,8 +7,8 @@ mods = HotImport([test_import]) # Update all the 'test_import' module
 ```
 
 ```py
-from test_import import say_hello #<- ═══════════════════════════════════════════════════════╗
-... #                                                                                        ║
+from test_import import say_hello
+... #                                                                                        
 mods = HotImport([say_hello]) # Update only the 'test_import.say_hello' function and the 'say_hello' function
 ```
 ```py
